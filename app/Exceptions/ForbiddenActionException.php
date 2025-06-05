@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Exceptions;
+
+use App\Enums\HttpStatusCodes;
+use App\Services\ApiResponse;
+use Exception;
+use Illuminate\Http\JsonResponse;
+
+class ForbiddenActionException extends Exception {
+
+    public function render(): JsonResponse {
+        return ApiResponse::sendResponse(message: __('Forbidden: Insufficient permissions'), httpCode: HttpStatusCodes::FORBIDDEN_403, resetJWT: true);
+    }
+}

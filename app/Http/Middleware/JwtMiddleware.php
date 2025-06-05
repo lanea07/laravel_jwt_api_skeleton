@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\HttpStatusCodes;
+use App\Services\ApiResponse;
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Exception;
@@ -13,7 +15,7 @@ class JwtMiddleware {
         try {
             JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return ApiResponse::sendResponse(message: __('Unauthorized'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
         }
 
         return $next($request);
