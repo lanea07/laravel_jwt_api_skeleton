@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class ApiResponse implements ResponseFormatter {
 
-    public static function sendResponse(array|null|string $data = [], array|null|string $message = '', HttpStatusCodes $httpCode = HttpStatusCodes::OK_200, bool $resetSession = false, Cookie|null $cookie = null): JsonResponse {
+    public static function sendResponse(mixed $data = [], mixed $message = '', HttpStatusCodes $httpCode = HttpStatusCodes::OK_200, bool $resetSession = false, Cookie|null $cookie = null): JsonResponse {
         if ($resetSession) {
             Session::flush();
         }
