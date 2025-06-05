@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Enums\HttpStatusCodes;
+use App\Models\User;
+use App\Services\ApiResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
+class AuthController extends Controller {
+    
+    public function register(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        try {
+            $token = JWTAuth::fromUser($user);
+        } catch (JWTException $e) {
+            return ApiResponse::sendResponse(message: __('Could not create token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+        }
+
+        return ApiResponse::sendResponse([
+            'token' => $token,
+            'user' => $user,
+        ], __('User created'), HttpStatusCodes::CREATED_201);
+    }
+
+    public function login(Request $request) {
+        $credentials = $request->only('email', 'password');
+
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return ApiResponse::sendResponse(message: __('Invalid credentials'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
+            }
+        } catch (JWTException $e) {
+            return ApiResponse::sendResponse(message: __('Could not create token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+        }
+
+        $cookie = cookie('token', $token, 60, null, null, true, true, false, 'Strict');
+        return ApiResponse::sendResponse(data: [
+            'token' => $token,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+        ], message: __('Login succesful'), httpCode: HttpStatusCodes::OK_200, cookie: $cookie);
+    }
+
+    public function logout() {
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+        } catch (JWTException $e) {
+            return ApiResponse::sendResponse(message: __('Failed to logout, please try again'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+        }
+
+        return ApiResponse::sendResponse(message: __('Successfully logged out'), httpCode: HttpStatusCodes::OK_200);
+    }
+
+    public function getUser() {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return ApiResponse::sendResponse(message: __('User not found'), httpCode: HttpStatusCodes::NOT_FOUND_404);
+            }
+            return ApiResponse::sendResponse($user->toArray(), null, HttpStatusCodes::OK_200);
+        } catch (JWTException $e) {
+            return ApiResponse::sendResponse($e->getMessage(), __('Failed to fetch user profile'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+        }
+    }
+
+    public function updateUser(Request $request) {
+        try {
+            $user = Auth::user();
+            $user->update($request->only(['name', 'email']));
+            
+            return ApiResponse::sendResponse($user, __('User updated succesfully'), HttpStatusCodes::ACCEPTED_202);
+        } catch (JWTException $e) {
+            return ApiResponse::sendResponse($e->getMessage(), __('Failed to update user'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+        }
+    }
+}
