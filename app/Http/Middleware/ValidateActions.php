@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\ForbiddenActionException;
 use App\Traits\ValidatesPermissions;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateActions {
@@ -19,9 +19,12 @@ class ValidateActions {
      */
     public function handle(Request $request, Closure $next): Response {
         $route = $request->route();
-        $permissions = $route?->defaults['permissions'] ?? [];
+
+        if(!isset($route?->defaults['permissions']) || !count($route?->defaults['permissions'])) throw new ForbiddenActionException();
+
+        $permissions = $route?->defaults['permissions'];
         $permissions = array_map('intval', $permissions);
-        self::HasPermissions($permissions, true);
+        self::hasPermissions($permissions, true);
         return $next($request);
     }
 }

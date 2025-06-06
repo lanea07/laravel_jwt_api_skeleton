@@ -5,5 +5,5 @@ use App\Services\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return ApiResponse::sendResponse(message: __('Project is API mode only'), httpCode: HttpStatusCodes::FORBIDDEN_403);
+    return ApiResponse::sendResponse(message: __('messages.web_access__api_mode_only'), httpCode: HttpStatusCodes::FORBIDDEN_403);
 });

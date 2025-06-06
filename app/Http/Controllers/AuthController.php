@@ -29,13 +29,13 @@ class AuthController extends Controller {
         try {
             $token = JWTAuth::fromUser($user);
         } catch (JWTException $e) {
-            return ApiResponse::sendResponse(message: __('Could not create token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+            return ApiResponse::sendResponse(message: __('auth.could_not_create_jwt_token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
 
         return ApiResponse::sendResponse([
             'token' => $token,
             'user' => $user,
-        ], __('User created'), HttpStatusCodes::CREATED_201);
+        ], __('auth.user_created'), HttpStatusCodes::CREATED_201);
     }
 
     public function login(Request $request) {
@@ -43,38 +43,38 @@ class AuthController extends Controller {
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return ApiResponse::sendResponse(message: __('Invalid credentials'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
+                return ApiResponse::sendResponse(message: __('auth.login__invalid_credentials'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
             }
         } catch (JWTException $e) {
-            return ApiResponse::sendResponse(message: __('Could not create token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+            return ApiResponse::sendResponse(message: __('auth.could_not_create_jwt_token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
 
         $cookie = cookie('token', $token, 60, null, null, true, true, false, 'Strict');
         return ApiResponse::sendResponse(data: [
             'token' => $token,
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-        ], message: __('Login succesful'), httpCode: HttpStatusCodes::OK_200, cookie: $cookie);
+        ], message: __('auth.login_succesful'), httpCode: HttpStatusCodes::OK_200, cookie: $cookie);
     }
 
     public function logout() {
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
         } catch (JWTException $e) {
-            return ApiResponse::sendResponse(message: __('Failed to logout, please try again'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+            return ApiResponse::sendResponse(message: __('auth.failed_logout'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
 
-        return ApiResponse::sendResponse(message: __('Successfully logged out'), httpCode: HttpStatusCodes::OK_200);
+        return ApiResponse::sendResponse(message: __('auth.succesful_logout'), httpCode: HttpStatusCodes::OK_200);
     }
 
     public function getUser() {
         try {
             $user = Auth::user();
             if (!$user) {
-                return ApiResponse::sendResponse(message: __('User not found'), httpCode: HttpStatusCodes::NOT_FOUND_404);
+                return ApiResponse::sendResponse(message: __('auth.user_not_found'), httpCode: HttpStatusCodes::NOT_FOUND_404);
             }
-            return ApiResponse::sendResponse($user->toArray(), null, HttpStatusCodes::OK_200);
+            return ApiResponse::sendResponse(is_array($user) ? $user : $user->toArray(), null, HttpStatusCodes::OK_200);
         } catch (JWTException $e) {
-            return ApiResponse::sendResponse($e->getMessage(), __('Failed to fetch user profile'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+            return ApiResponse::sendResponse($e->getMessage(), __('auth.failed_fetch_user_profile'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
     }
 
@@ -83,9 +83,9 @@ class AuthController extends Controller {
             $user = Auth::user();
             $user->update($request->only(['name', 'email']));
             
-            return ApiResponse::sendResponse($user, __('User updated succesfully'), HttpStatusCodes::ACCEPTED_202);
+            return ApiResponse::sendResponse($user, __('auth.user_updated_succesfully'), HttpStatusCodes::ACCEPTED_202);
         } catch (JWTException $e) {
-            return ApiResponse::sendResponse($e->getMessage(), __('Failed to update user'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
+            return ApiResponse::sendResponse($e->getMessage(), __('auth.user_updated_failed'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
     }
 }

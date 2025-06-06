@@ -17,7 +17,7 @@ trait ValidatesPermissions {
      * 
      * @throws ForbiddenActionException If validation fails the exception is raised
      */
-    public static function HasPermissions(array $permissions, bool $endSession = false) {
+    public static function hasPermissions(array $permissions, bool $endSession = false) {
         $userPermissions = Auth::user()->getAllPermissions()->pluck('id')->toArray();
         $hasPermissions = array_intersect($permissions, $userPermissions);
 
