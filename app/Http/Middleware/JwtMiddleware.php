@@ -15,7 +15,7 @@ class JwtMiddleware {
         try {
             JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
-            return ApiResponse::sendResponse(message: __('auth__jwt_invalid_unauthorized'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
+            return ApiResponse::sendResponse(message: __('auth.jwt_invalid_unauthorized'), httpCode: HttpStatusCodes::UNAUTHORIZED_401);
         }
 
         return $next($request);
