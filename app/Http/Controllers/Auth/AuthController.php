@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Enums\HttpStatusCodes;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\ApiResponse;
 use Illuminate\Http\Request;
