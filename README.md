@@ -1,4 +1,4 @@
-# Teo REST API
+# jwt REST API
 
 A RESTful API application built with Laravel.
 
