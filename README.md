@@ -68,7 +68,7 @@ All protected routes require a valid JWT token. Use the `/api/{lang}/login` endp
 - All responses vía ApiResponse facade are JSON-formatted for easy frontend integration.
 
 ## Additional Docs
-The app makes heavy use of `tymon/jwt` and `"spatie/laravel-permission"`. These are the official sites:
+The app makes use of `tymon/jwt` and `"spatie/laravel-permission"`. These are the official sites:
 
 - [Tymon/jwt](https://jwt-auth.readthedocs.io/en/develop)
 - [Spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v6/introduction)
