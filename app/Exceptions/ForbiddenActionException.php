@@ -3,13 +3,13 @@
 namespace App\Exceptions;
 
 use App\Enums\HttpStatusCodes;
-use App\Services\ApiResponse;
+use App\Facades\ApiResponse;
 use Exception;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ForbiddenActionException extends Exception {
 
-    public function render(): JsonResponse {
+    public function render(): JsonResource {
         return ApiResponse::sendResponse(message: __('messages.forbidden__insufficient_permissions'), httpCode: HttpStatusCodes::FORBIDDEN_403, resetJWT: true);
     }
 }

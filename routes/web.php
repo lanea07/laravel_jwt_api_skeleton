@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\HttpStatusCodes;
-use App\Services\ApiResponse;
+use App\Facades\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
