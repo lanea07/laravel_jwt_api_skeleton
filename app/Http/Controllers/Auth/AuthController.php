@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Enums\HttpStatusCodes;
+use App\Facades\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller {
-    
+
     public function register(Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -36,7 +36,7 @@ class AuthController extends Controller {
         return ApiResponse::sendResponse([
             'token' => $token,
             'user' => $user,
-        ], __('auth.user_created'), HttpStatusCodes::CREATED_201);
+        ], __('auth.user_created'), HttpStatusCodes::CREATED_201, resetJWT: true);
     }
 
     public function login(Request $request) {
@@ -73,7 +73,7 @@ class AuthController extends Controller {
             if (!$user) {
                 return ApiResponse::sendResponse(message: __('auth.user_not_found'), httpCode: HttpStatusCodes::NOT_FOUND_404);
             }
-            return ApiResponse::sendResponse(is_array($user) ? $user : $user->toArray(), null, HttpStatusCodes::OK_200);
+            return ApiResponse::sendResponse(data: is_array($user) ? $user : $user->toArray(), httpCode: HttpStatusCodes::OK_200, resetJWT: true);
         } catch (JWTException $e) {
             return ApiResponse::sendResponse($e->getMessage(), __('auth.failed_fetch_user_profile'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
@@ -83,8 +83,8 @@ class AuthController extends Controller {
         try {
             $user = Auth::user();
             $user->update($request->only(['name', 'email']));
-            
-            return ApiResponse::sendResponse($user, __('auth.user_updated_succesfully'), HttpStatusCodes::ACCEPTED_202);
+
+            return ApiResponse::sendResponse($user, __('auth.user_updated_succesfully'), HttpStatusCodes::ACCEPTED_202, true);
         } catch (JWTException $e) {
             return ApiResponse::sendResponse($e->getMessage(), __('auth.user_updated_failed'), HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }

@@ -3,9 +3,15 @@
 namespace App\Contracts;
 
 use App\Enums\HttpStatusCodes;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Cookie;
 
 interface ResponseFormatter {
-    public static function sendResponse(mixed $data = [], mixed $message = '', HttpStatusCodes $httpCode = HttpStatusCodes::OK_200, bool $resetJWT = false, Cookie|null $cookie = null): JsonResponse;
+    public function sendResponse(
+        mixed $data = [],
+        string $message = '',
+        HttpStatusCodes $httpCode = HttpStatusCodes::OK_200,
+        bool $resetJWT = false,
+        ?Cookie $cookie = null
+    ): JsonResource;
 }
