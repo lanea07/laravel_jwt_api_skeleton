@@ -2,13 +2,19 @@
 
 namespace App\Services;
 
+use App\Contracts\ApiResourceFormatter;
 use App\Contracts\ResponseFormatter;
 use App\Enums\HttpStatusCodes;
-use App\Http\Resources\DefaultResponseResource;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class ApiResponseService implements ResponseFormatter {
+
+    public function __construct(
+        protected ApiResourceFormatter $formatter
+    ) {
+    }
 
     public function sendResponse(
         mixed $data = [],
@@ -16,7 +22,12 @@ class ApiResponseService implements ResponseFormatter {
         HttpStatusCodes $httpCode = HttpStatusCodes::OK_200,
         bool $resetJWT = false,
         ?Cookie $cookie = null
-    ): JsonResource {
-        return new DefaultResponseResource($data, $message, $resetJWT, $cookie, $httpCode->value);
+    ): JsonResponse {
+        if ($resetJWT) {
+            $token = Auth::refresh();
+            $cookie = cookie('token', $token, env('COOKIE_LIFETIME', 60), null, null, true, true, false, 'Strict');
+        }
+
+        return $this->formatter->buildResponse($data, $message, $httpCode->value, $cookie);
     }
 }

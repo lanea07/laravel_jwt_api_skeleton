@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultResponseResource extends JsonResource {
@@ -36,14 +35,5 @@ class DefaultResponseResource extends JsonResource {
 
     public function withResponse($request, $response): void {
         $response->setStatusCode($this->statusCode);
-
-        if ($this->resetJWT) {
-            $token = Auth::refresh();
-            $this->cookie = cookie('token', $token, env('COOKIE_LIFETIME', 60), null, null, true, true, false, 'Strict');
-        }
-
-        if ($this->cookie) {
-            $response->headers->setCookie($this->cookie);
-        }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Enums;
 
+/**
+ * Contains all common http status codes. Provides standard enumeration for use in API responses.
+ */
 enum HttpStatusCodes: int {
     
     // 1xx: Informational
