@@ -50,7 +50,7 @@ class AuthController extends Controller {
             return ApiResponse::sendResponse(message: __('auth.could_not_create_jwt_token'), httpCode: HttpStatusCodes::INTERNAL_SERVER_ERROR_500);
         }
 
-        $cookie = cookie('token', $token, 60, null, null, true, true, false, 'Strict');
+        $cookie = cookie('token', $token, env('COOKIE_LIFETIME', 60), null, null, true, true, false, 'Strict');
         return ApiResponse::sendResponse(data: [
             'token' => $token,
             'expires_in' => auth('api')->factory()->getTTL() * 60,

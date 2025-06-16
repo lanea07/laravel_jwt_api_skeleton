@@ -4,11 +4,11 @@ namespace App\Services;
 
 use App\Contracts\ResponseFormatter;
 use App\Enums\HttpStatusCodes;
-use App\Http\Resources\ApiResponseResource;
+use App\Http\Resources\DefaultResponseResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class ApiResponse implements ResponseFormatter {
+class ApiResponseService implements ResponseFormatter {
 
     public function sendResponse(
         mixed $data = [],
@@ -17,6 +17,6 @@ class ApiResponse implements ResponseFormatter {
         bool $resetJWT = false,
         ?Cookie $cookie = null
     ): JsonResource {
-        return new ApiResponseResource($data, $message, $resetJWT, $cookie, $httpCode->value);
+        return new DefaultResponseResource($data, $message, $resetJWT, $cookie, $httpCode->value);
     }
 }

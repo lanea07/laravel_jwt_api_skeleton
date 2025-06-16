@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\JwtMiddleware;
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ValidateActions;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'setLocale' => SetLocale::class,
             'jwt' => JwtMiddleware::class,
             'hasActions' => ValidateActions::class
         ]);

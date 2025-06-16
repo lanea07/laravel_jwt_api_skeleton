@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class ApiResponseResource extends JsonResource {
+class DefaultResponseResource extends JsonResource {
     protected string $message;
     protected bool $resetJWT;
     protected ?Cookie $cookie;
@@ -39,7 +39,7 @@ class ApiResponseResource extends JsonResource {
 
         if ($this->resetJWT) {
             $token = Auth::refresh();
-            $this->cookie = cookie('token', $token, 60, null, null, true, true, false, 'Strict');
+            $this->cookie = cookie('token', $token, env('COOKIE_LIFETIME', 60), null, null, true, true, false, 'Strict');
         }
 
         if ($this->cookie) {
