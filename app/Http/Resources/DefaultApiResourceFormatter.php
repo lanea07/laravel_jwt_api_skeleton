@@ -4,8 +4,8 @@ namespace App\Http\Resources;
 
 use App\Contracts\ApiResourceFormatter;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultApiResourceFormatter implements ApiResourceFormatter
 {

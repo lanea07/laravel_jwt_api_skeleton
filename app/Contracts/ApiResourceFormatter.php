@@ -3,7 +3,7 @@
 namespace App\Contracts;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cookie;
+use Symfony\Component\HttpFoundation\Cookie;
 
 interface ApiResourceFormatter {
 
