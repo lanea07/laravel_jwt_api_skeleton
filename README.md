@@ -70,5 +70,5 @@ All protected routes require a valid JWT token. Use the `/api/{lang}/login` endp
 ## Additional Docs
 The app makes use of `tymon/jwt` and `"spatie/laravel-permission"`. These are the official sites:
 
-- [Tymon/jwt](https://jwt-auth.readthedocs.io/en/develop)
-- [Spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v6/introduction)
+- [Tymon/jwt](https://jwt-auth.readthedocs.io/en/develop){:target="_blank"}
+- [Spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v6/introduction){:target="_blank"}
