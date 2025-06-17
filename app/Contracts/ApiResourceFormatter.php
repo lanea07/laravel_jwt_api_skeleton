@@ -2,7 +2,8 @@
 
 namespace App\Contracts;
 
-use Illuminate\Http\JsonResponse;
+use App\Enums\HttpStatusCodes;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Cookie;
 
 interface ApiResourceFormatter {
@@ -13,12 +14,7 @@ interface ApiResourceFormatter {
      * @param HttpStatusCodes $httpCode Http status code
      * @param ?Cookie $cookie If needed, a Cookie instance can be submitted in the response.
      * 
-     * @return JsonResponse
+     * @return JsonResource
      */
-    public function buildResponse(
-        mixed $data,
-        string $message,
-        int $httpCode,
-        ?Cookie $cookie
-    ): JsonResponse;
+    public function buildResponse(mixed $data, string $message, HttpStatusCodes $httpCode, ?Cookie $cookie): JsonResource;
 }

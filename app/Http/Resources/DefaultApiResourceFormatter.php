@@ -3,22 +3,13 @@
 namespace App\Http\Resources;
 
 use App\Contracts\ApiResourceFormatter;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Response;
+use App\Enums\HttpStatusCodes;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class DefaultApiResourceFormatter implements ApiResourceFormatter
-{
-    public function buildResponse(mixed $data, string $message, int $httpCode, ?Cookie $cookie): JsonResponse{
-        $response = Response::json([
-            'message' => $message,
-            'data' => $data,
-        ], $httpCode);
+class DefaultApiResourceFormatter implements ApiResourceFormatter {
 
-        if ($cookie) {
-            $response->withCookie($cookie);
-        }
-
-        return $response;
+    public function buildResponse(mixed $data, string $message, HttpStatusCodes $httpCode, ?Cookie $cookie): JsonResource {
+        return new DefaultResponseResource($data, $message, false, $cookie, $httpCode);
     }
 }

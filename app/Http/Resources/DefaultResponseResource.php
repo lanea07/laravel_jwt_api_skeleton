@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\HttpStatusCodes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Cookie;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultResponseResource extends JsonResource {
     protected string $message;
@@ -17,19 +18,19 @@ class DefaultResponseResource extends JsonResource {
         string $message = '',
         bool $resetJWT = false,
         ?Cookie $cookie = null,
-        int $statusCode = 200
+        HttpStatusCodes $statusCode = HttpStatusCodes::OK_200
     ) {
         parent::__construct($resource);
         $this->message = $message;
         $this->resetJWT = $resetJWT;
         $this->cookie = $cookie;
-        $this->statusCode = $statusCode;
+        $this->statusCode = $statusCode->value;
     }
 
     public function toArray(Request $request): array {
         return [
             'message' => $this->message,
-            'data' => $this->resource,
+            'data' => $this->resource
         ];
     }
 

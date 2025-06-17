@@ -4,6 +4,7 @@ namespace App\Contracts;
 
 use App\Enums\HttpStatusCodes;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Cookie;
 
 interface ResponseFormatter {
@@ -23,5 +24,5 @@ interface ResponseFormatter {
         HttpStatusCodes $httpCode = HttpStatusCodes::OK_200,
         bool $resetJWT = false,
         ?Cookie $cookie = null
-    ): JsonResponse;
+    ): JsonResource;
 }
