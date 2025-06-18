@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Contracts\ApiResourceFormatter;
-use App\Http\Resources\DefaultApiResourceFormatter;
+use App\Contracts\ApiResponseContract;
+use App\Factories\ApiResponseFactory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 
@@ -12,7 +12,9 @@ class ApiServiceProvider extends ServiceProvider {
      * Register services.
      */
     public function register(): void {
-        $this->app->bind(ApiResourceFormatter::class, DefaultApiResourceFormatter::class);
+        $this->app->bind(ApiResponseContract::class, function () {
+            return ApiResponseFactory::make();
+        });
     }
 
     /**

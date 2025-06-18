@@ -2,13 +2,12 @@
 
 namespace App\Facades;
 
+use App\Contracts\ApiResponseContract;
 use Illuminate\Support\Facades\Facade;
-use App\Services\ApiResponseService;
 
-class ApiResponse extends Facade
-{
-    protected static function getFacadeAccessor(): string
-    {
-        return ApiResponseService::class;
+class ApiResponse extends Facade {
+    
+    protected static function getFacadeAccessor(): string {
+        return ApiResponseContract::class;
     }
 }

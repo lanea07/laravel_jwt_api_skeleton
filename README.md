@@ -16,7 +16,7 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - Custom Cookie lifetime via COOKIE_LIFETIME .env variable.
 - **Localization**<br>
   Multilingual support via url.
-  - All API routes are prefixed with a `{lang}` parameter. (E.g. {{site}}/api/**en**/user-actions)
+  - All API routes are prefixed with a `{lang}` parameter. (E.g. {{site}}/api/v1/**`en`**/user-actions)
   - Automatic locale setting via the `setLocale` middleware.
   - Add as many languages as you need to support in your app
 - **Role-Based Permissions**
@@ -32,7 +32,7 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - Additional info for jwt features can be found in jwt.php file in config folder, or in Additional Docs section in this file.
 - **Default API Response Facade**
   - The ApiResponse facade registered in the AppServiceProvider provides a common format for the API response using Laravel's Resources feature
-  - The DefaultResponseResource is used across the entire app to standarize API response. The ApiResponse facade and ApiResponse service provides an easy-to-switch resource implementation so you can change the implementation of the resource for specific response needs without touching nothing else in the app. Just use your custom resource implementation and make it the response of your ApiResource service. Need custom response formats for development and production environments?, we got you covered. Have different API versions (v1, v2, etc...) with different result formats; no problem. For any of these cases just implement your own resources and build your own api logic in the ApiResponse service.
+  - The ApiResponseFactory provides an easy and convenient way to switch between different API response formats based on your own conditions.
 - **Default Web Access Disabled**
   - Web access to the app is disabled by default. To enable this just modify web.app in routes folder as per your needs.
 - **All Laravel Features you Know and Love**
@@ -53,10 +53,15 @@ A RESTful API application built with Laravel, designed for secure, token-based u
    ```sh
    php artisan migrate
    ```
-5. **Start the server**
+5. **Generate JWT Secret**
+   ```sh
+   php artisan jwt:secret
+   ```
+6. **Start the server**
    ```sh
    php artisan serve
    ```
+7. **Generate all your custom .env variables**
 
 ## Authentication
 
