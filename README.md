@@ -16,7 +16,7 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - Custom Cookie lifetime via COOKIE_LIFETIME .env variable.
 - **Localization**<br>
   Multilingual support via url.
-  - All API routes are prefixed with a `{lang}` parameter. (E.g. {{site}}/api/v1/**`en`**/user-actions)
+  - All API routes are prefixed with a `{lang}` parameter. (E.g. {{app_url}}/api/{version}/**`en`**/user-actions)
   - Automatic locale setting via the `setLocale` middleware.
   - Add as many languages as you need to support in your app
 - **Role-Based Permissions**
@@ -35,6 +35,8 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - The ApiResponseFactory provides an easy and convenient way to switch between different API response formats based on your own conditions.
 - **Default Web Access Disabled**
   - Web access to the app is disabled by default. To enable this just modify web.app in routes folder as per your needs.
+- **API Version Handling**
+  - The API comes with a middleware to help validate API versions. This together with the ApiResponseFactory feature lets you handle different response formats depending on which API version you are currently. This is an example of a versioned url **{{app_url}}/api/`{version}`/{lang}/user-actions**
 - **All Laravel Features you Know and Love**
   - The project is entirely based on Laravel 12. All artisan commands are available as usually.
 
@@ -65,7 +67,7 @@ A RESTful API application built with Laravel, designed for secure, token-based u
 
 ## Authentication
 
-All protected routes require a valid JWT token. Use the `/api/{lang}/login` endpoint to obtain a token.
+All protected routes require a valid JWT token. Use the `/api/{version}/{lang}/login` endpoint to obtain a token.
 
 ## Notes
 
