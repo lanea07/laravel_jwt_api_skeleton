@@ -36,7 +36,7 @@ class AuthController extends Controller {
         return ApiResponse::sendResponse([
             'token' => $token,
             'user' => $user,
-        ], __('auth.user_created'), HttpStatusCodes::CREATED_201, resetJWT: true);
+        ], __('auth.user_created'), HttpStatusCodes::CREATED_201);
     }
 
     public function login(Request $request) {
