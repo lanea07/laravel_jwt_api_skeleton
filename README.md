@@ -29,15 +29,15 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - The `hasActions` Middleware checks for JWT validity and user actions.
   - Additional info for jwt features can be found in `jwt.php` file in config folder, or in Additional Docs section in this file.
 - **Default API Response Facade**
-  - The ApiResponse facade registered in the AppServiceProvider provides a common format for the API response using Laravel's Resources feature.
+  - The ApiResponse facade registered in the AppServiceProvider provides a common format for the API response, all devs can use the same facade without worring for custom response formats.
   - The ApiResponseFactory class provides an easy and convenient way to switch between different API response formats based on your own conditions.
 - **Default Web Access Disabled**
-  - Web access to the app is disabled by default. To enable just modify `web.app` in routes folder as per your needs.
+  - Web access to the app is disabled by default. To enable this just modify `web.app` in routes folder as per your needs.
 - **API Version Handling**
   - The API comes with a middleware to help validate API versions. This, along with the ApiResponseFactory feature lets you handle different response formats depending on which API version you are requesting in url. This is an example of a versioned url
   > **{{app_url}}/api/`{version}`/{lang}/user-actions**
 - **Temporary Tables**
-  - A utility service that is provided to generate temporary tables on-the-go for single use during request processing.
+  - A utility service provided to generate temporary tables on-the-go for single use during request processing.
 - **All Laravel Features you Know and Love**
   - The project is entirely based on Laravel 12. All artisan commands are available as usually.
 
