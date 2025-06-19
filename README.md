@@ -36,6 +36,8 @@ A RESTful API application built with Laravel, designed for secure, token-based u
 - **API Version Handling**
   - The API comes with a middleware to help validate API versions. This, along with the ApiResponseFactory feature lets you handle different response formats depending on which API version you are requesting in url. This is an example of a versioned url
   > **{{app_url}}/api/`{version}`/{lang}/user-actions**
+- **Temporary Tables**
+  - A utility service that is provided to generate temporary tables on-the-go for single use during request processing.
 - **All Laravel Features you Know and Love**
   - The project is entirely based on Laravel 12. All artisan commands are available as usually.
 

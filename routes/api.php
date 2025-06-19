@@ -21,6 +21,7 @@ Route::prefix('{version}/{lang}')
 
             Route::prefix('default-controller')->group(function () {
                 Route::get('/response', [DefaultController::class, 'index'])->defaults('permissions', [1, 100]);
+                Route::get('/temp-table', [DefaultController::class, 'tempTableExample'])->defaults('permissions', [1, 100]);
             });
         });
     });
