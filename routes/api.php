@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DefaultController;
 
-Route::prefix('{version}/{lang}')
-    ->middleware(['setLocale', 'validateApiVersion'])
+Route::middleware(['setLocale', 'validateApiVersion'])
     ->group(function () {
 
         Route::post('/register', [AuthController::class, 'register']);
