@@ -16,7 +16,7 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - Custom Cookie lifetime via COOKIE_LIFETIME .env variable.
 - **Localization**<br>
   Multilingual support via url.
-  - All API routes should contain a `{lang}` parameter. (E.g. {{app_url}}/api/user-actions?**lang=es**)
+  - All API routes should contain a `{lang}` parameter. (E.g. {{app_url}}/api/**{version}**/**{lang}**/user-actions)
   - Automatic locale setting via the `setLocale` middleware.
   - Add as many languages as you need to support in your app
 - **Role-Based Permissions**
@@ -35,7 +35,9 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - Web access to the app is disabled by default. To enable this just modify `web.app` in routes folder as per your needs.
 - **API Version Handling**
   - The API comes with a middleware to help validate API versions. This, along with the ApiResponseFactory feature lets you handle different response formats depending on which API version you are requesting in url. This is an example of a versioned url
-  > **{{app_url}}/api/user-actions?version=v1**
+  > **{{app_url}}/api/v1/en/default-controller/response**
+
+  Currently the app comes with two api response versions (v1, v2). See `app\services` folder for more info.
 - **Temporary Tables**
   - A utility service provided to generate temporary tables on-the-go for single use during request processing.
 - **All Laravel Features you Know and Love**
