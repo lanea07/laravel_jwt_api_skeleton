@@ -1,6 +1,6 @@
 # Laravel JWT API Skeleton
 
-A RESTful API application built with Laravel, designed for secure, token-based user authentication and robust resource management.
+A RESTful API application built with Laravel, designed for secure, token-based user authentication and robust resource management. Features a modular Framework architecture that separates core API functionality from business logic.
 
 # Requirements
 
@@ -9,6 +9,11 @@ A RESTful API application built with Laravel, designed for secure, token-based u
 
 ## Features
 
+- **Framework Architecture**
+  - Organized framework components in dedicated `app/Framework/` directory
+  - Clear separation between framework code and business logic
+  - Easy to maintain, update, and extend
+  - Proper namespacing with `App\Framework\...` structure
 - **User Authentication**
   - Registration and login endpoints. (Registration can be removed if not necessary)
   - User logout and profile update functionality. (Profile update can be removed if not necessary)
@@ -28,18 +33,31 @@ A RESTful API application built with Laravel, designed for secure, token-based u
   - All protected routes under `jwt` middleware require valid JWT tokens. For improved security JWT is set into the HttpOnly cookie and not in the JSON response.
   - The `hasActions` Middleware checks for JWT validity and user actions.
   - Additional info for jwt features can be found in `jwt.php` file in config folder, or in Additional Docs section in this file.
-- **Default API Response Facade**
-  - The ApiResponse facade registered in the AppServiceProvider provides a common format for the API response, all devs can use the same facade without worring for custom response formats.
-  - The ApiResponseFactory class provides an easy and convenient way to switch between different API response formats based on your own conditions.
+- **Framework API Response System**
+  - The ApiResponse facade from the Framework provides a common format for API responses
+  - The ApiResponseFactory class provides easy switching between different API response formats
+  - Shared ApiResponseFormatterService for consistent response formatting
 - **Default Web Access Disabled**
-  - Web access to the app is disabled by default. To enable this just modify `web.app` in routes folder as per your needs.
+  - Web access to the app is disabled by default. To enable this just modify `web.php` in routes folder as per your needs.
 - **API Version Handling**
   - The API comes with a middleware to help validate API versions. This, along with the ApiResponseFactory feature lets you handle different response formats depending on which API version you are requesting in url. This is an example of a versioned url
   > **{{app_url}}/api/v1/en/default-controller/response**
 
-  Currently the app comes with two api response versions (v1, v2). See `app\services` folder for more info.
+  Currently the app comes with two api response versions (v1, v2). See `app/Framework/Services` folder for more info.
 - **Temporary Tables**
   - A utility service provided to generate temporary tables on-the-go for single use during request processing.
+- **Framework Components**
+  - **Contracts**: Define interfaces for core functionality
+  - **Controllers**: Framework-level controllers (AuthController)
+  - **Enums**: HTTP status codes and other enumerations
+  - **Exceptions**: Custom exception handling for API requests
+  - **Facades**: Easy access to framework services
+  - **Factories**: Create appropriate service instances
+  - **Middleware**: JWT, localization, permissions, and API versioning
+  - **Providers**: Service providers for framework registration
+  - **Services**: Core API services (response handling, temp tables)
+  - **Traits**: Reusable functionality (permission validation)
+  - **ValueObjects**: Immutable data structures
 - **All Laravel Features you Know and Love**
   - The project is entirely based on Laravel 12. All artisan commands are available as usually.
 

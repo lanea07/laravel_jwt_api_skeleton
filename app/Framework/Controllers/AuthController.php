@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Framework\Controllers;
 
-use App\Enums\HttpStatusCodes;
-use App\Facades\ApiResponse;
+use App\Framework\Enums\HttpStatusCodes;
+use App\Framework\Facades\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -39,7 +41,8 @@ class AuthController extends Controller {
         ], __('auth.user_created'), HttpStatusCodes::CREATED_201);
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->only('email', 'password');
 
         try {
@@ -57,7 +60,8 @@ class AuthController extends Controller {
         ], message: __('auth.login_succesful'), httpCode: HttpStatusCodes::OK_200, cookie: $cookie);
     }
 
-    public function logout() {
+    public function logout()
+    {
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
         } catch (JWTException $e) {
@@ -67,7 +71,8 @@ class AuthController extends Controller {
         return ApiResponse::sendResponse(message: __('auth.succesful_logout'), httpCode: HttpStatusCodes::OK_200);
     }
 
-    public function getUser() {
+    public function getUser()
+    {
         try {
             $user = Auth::user();
             if (!$user) {
@@ -79,7 +84,8 @@ class AuthController extends Controller {
         }
     }
 
-    public function updateUser(Request $request) {
+    public function updateUser(Request $request)
+    {
         try {
             $user = Auth::user();
             $user->update($request->only(['name', 'email']));

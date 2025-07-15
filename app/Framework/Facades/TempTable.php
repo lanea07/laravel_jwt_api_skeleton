@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Facades;
+namespace App\Framework\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static TempTableService create(string $tableName, string|array|\App\Contracts\TempTableSchemaContract $schema)
+ * @method static TempTableService create(string $tableName, string|array|\App\Framework\Contracts\TempTableSchemaContract $schema)
  * @method static TempTableService insert(array $data)
  * @method static TempTableService update(array $where, array $data)
  * @method static TempTableService delete(array $where)
@@ -24,11 +24,13 @@ use Illuminate\Support\Facades\Facade;
  * @method static TempTableService limit(int $value)
  * @method static \Illuminate\Database\Query\Builder query()
  *
- * @see \App\Services\TempTableService
+ * @see \App\Framework\Services\TempTableService
  */
-class TempTable extends Facade {
+class TempTable extends Facade
+{
 
-    protected static function getFacadeAccessor(): string {
+    protected static function getFacadeAccessor(): string
+    {
         return 'tempTable';
     }
 }

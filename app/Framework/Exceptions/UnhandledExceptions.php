@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Framework\Exceptions;
 
-use App\Enums\HttpStatusCodes;
-use App\Facades\ApiResponse;
+use App\Framework\Enums\HttpStatusCodes;
+use App\Framework\Services\ApiResponseFormatterService;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +15,14 @@ use Throwable;
 
 class UnhandledExceptions extends Handler
 {
+    private ApiResponseFormatterService $formatterService;
+
+    public function __construct($app)
+    {
+        parent::__construct($app);
+        $this->formatterService = app(ApiResponseFormatterService::class);
+    }
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -42,7 +50,7 @@ class UnhandledExceptions extends Handler
     public function render($request, Throwable $e)
     {
         // Only handle JSON requests for API routes
-        if ($request->expectsJson() && $this->isApiRequest($request)) {
+        if ($request->expectsJson() && $this->formatterService->isApiRequest($request)) {
             return $this->handleApiException($request, $e);
         }
 
@@ -50,17 +58,7 @@ class UnhandledExceptions extends Handler
     }
 
     /**
-     * Check if the request is for an API route
-     */
-    private function isApiRequest(Request $request): bool
-    {
-        $path = $request->path();
-        // Check if the path starts with version pattern (v1, v2, etc.)
-        return preg_match('/^(v\d+)\//', $path);
-    }
-
-    /**
-     * Handle API exceptions and format them using the ApiResponse facade
+     * Handle API exceptions and format them using the shared formatter service
      */
     public function handleApiException(Request $request, Throwable $e): JsonResponse
     {
@@ -68,7 +66,7 @@ class UnhandledExceptions extends Handler
         $message = $this->getExceptionMessage($e);
         $data = $this->getExceptionData($e);
 
-        return ApiResponse::sendResponse($data, $message, $httpCode);
+        return $this->formatterService->formatResponse($data, $message, $httpCode);
     }
 
     /**
@@ -80,24 +78,7 @@ class UnhandledExceptions extends Handler
             $e instanceof ValidationException => HttpStatusCodes::UNPROCESSABLE_ENTITY_422,
             $e instanceof NotFoundHttpException => HttpStatusCodes::NOT_FOUND_404,
             $e instanceof MethodNotAllowedHttpException => HttpStatusCodes::METHOD_NOT_ALLOWED_405,
-            $e instanceof HttpException => $this->mapHttpStatusCode($e->getStatusCode()),
-            default => HttpStatusCodes::INTERNAL_SERVER_ERROR_500,
-        };
-    }
-
-    /**
-     * Map HTTP status codes to enum values
-     */
-    private function mapHttpStatusCode(int $statusCode): HttpStatusCodes
-    {
-        return match ($statusCode) {
-            400 => HttpStatusCodes::BAD_REQUEST_400,
-            401 => HttpStatusCodes::UNAUTHORIZED_401,
-            403 => HttpStatusCodes::FORBIDDEN_403,
-            404 => HttpStatusCodes::NOT_FOUND_404,
-            405 => HttpStatusCodes::METHOD_NOT_ALLOWED_405,
-            422 => HttpStatusCodes::UNPROCESSABLE_ENTITY_422,
-            500 => HttpStatusCodes::INTERNAL_SERVER_ERROR_500,
+            $e instanceof HttpException => $this->formatterService->mapStatusCodeToEnum($e->getStatusCode()),
             default => HttpStatusCodes::INTERNAL_SERVER_ERROR_500,
         };
     }

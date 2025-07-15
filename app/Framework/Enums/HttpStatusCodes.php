@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Enums;
+namespace App\Framework\Enums;
 
 /**
  * Contains all common http status codes. Provides standard enumeration for use in API responses.
  */
-enum HttpStatusCodes: int {
-    
+enum HttpStatusCodes: int
+{
+
     // 1xx: Informational
     case CONTINUE_100 = 100;
     case SWITCHING_PROTOCOLS_101 = 101;

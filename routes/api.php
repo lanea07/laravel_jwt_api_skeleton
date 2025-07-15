@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
+use App\Framework\Controllers\AuthController;
 use App\Http\Controllers\DefaultController;
 
 Route::prefix('{version}/{lang}')

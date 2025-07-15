@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Providers;
+namespace App\Framework\Providers;
 
-use App\Contracts\ApiResponseContract;
-use App\Factories\ApiResponseFactory;
-use App\Services\TempTableService;
+use App\Framework\Contracts\ApiResponseContract;
+use App\Framework\Factories\ApiResponseFactory;
+use App\Framework\Services\TempTableService;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\App;
 
 class ApiServiceProvider extends ServiceProvider
 {

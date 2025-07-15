@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Framework\Middleware;
 
-use App\Enums\HttpStatusCodes;
-use App\Facades\ApiResponse;
+use App\Framework\Enums\HttpStatusCodes;
+use App\Framework\Facades\ApiResponse;
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Exception;
 use Illuminate\Http\Request;
 
-class JwtMiddleware {
-    
-    public function handle(Request $request, Closure $next) {
+class JwtMiddleware
+{
+
+    public function handle(Request $request, Closure $next)
+    {
         try {
             JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {

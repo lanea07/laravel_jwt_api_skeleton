@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Factories;
+namespace App\Framework\Factories;
 
-use App\Contracts\ApiResponseContract;
-use App\Services\ApiV1ResponseService;
-use App\Services\ApiV2ResponseService;
+use App\Framework\Contracts\ApiResponseContract;
+use App\Framework\Services\ApiV1ResponseService;
+use App\Framework\Services\ApiV2ResponseService;
 
 class ApiResponseFactory
 {

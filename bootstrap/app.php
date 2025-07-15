@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Middleware\FormatApiResponse;
-use App\Http\Middleware\JwtMiddleware;
-use App\Http\Middleware\SetLocale;
-use App\Http\Middleware\ValidateActions;
-use App\Http\Middleware\ValidateApiVersion;
-use App\Exceptions\UnhandledExceptions;
+use App\Framework\Middleware\FormatApiResponse;
+use App\Framework\Middleware\JwtMiddleware;
+use App\Framework\Middleware\SetLocale;
+use App\Framework\Middleware\ValidateActions;
+use App\Framework\Middleware\ValidateApiVersion;
+use App\Framework\Exceptions\UnhandledExceptions;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

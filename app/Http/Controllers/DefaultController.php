@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\HttpStatusCodes;
-use App\Facades\ApiResponse;
-use App\Facades\TempTable;
-use App\ValueObjects\TempTableColumn;
+use App\Framework\Enums\HttpStatusCodes;
+use App\Framework\Facades\ApiResponse;
+use App\Framework\Facades\TempTable;
+use App\Framework\ValueObjects\TempTableColumn;
 use Illuminate\Support\Facades\Auth;
 
-class DefaultController extends Controller {
+class DefaultController extends Controller
+{
 
-    public function index() {
+    public function index()
+    {
         $permissions = Auth::user()->getAllPermissions();
         return ApiResponse::sendResponse($permissions, __('controllers/default_controller.default_controller_response'), HttpStatusCodes::OK_200, true);
     }
 
-    public function tempTableExample() {
+    public function tempTableExample()
+    {
         $result = TempTable::create('temp_table', [
             new TempTableColumn(
                 name: 'id',

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Traits;
+namespace App\Framework\Traits;
 
-use App\Exceptions\ForbiddenActionException;
+use App\Framework\Exceptions\ForbiddenActionException;
 use Illuminate\Support\Facades\Auth;
 
-trait ValidatesPermissions {
+trait ValidatesPermissions
+{
 
     /**
      * Validates if the current user has assigned the given permissions, if validation fails and endSession is true, the execution is stopped and an exception is thrown
@@ -17,7 +18,8 @@ trait ValidatesPermissions {
      * 
      * @throws ForbiddenActionException If validation fails the exception is raised
      */
-    public static function hasPermissions(array $permissions, bool $endSession = false) {
+    public static function hasPermissions(array $permissions, bool $endSession = false)
+    {
         $userPermissions = Auth::user()->getAllPermissions()->pluck('id')->toArray();
         $hasPermissions = array_intersect($permissions, $userPermissions);
 
