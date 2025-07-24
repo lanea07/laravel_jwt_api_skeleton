@@ -2,6 +2,9 @@
 
 namespace App\Framework\Middleware;
 
+use App\Framework\Enums\HttpStatusCodes;
+use App\Framework\Facades\ApiResponse;
+use Illuminate\Support\Facades\Log;
 use App\Framework\Services\ApiResponseFormatterService;
 use Closure;
 use Illuminate\Http\JsonResponse;
@@ -53,13 +56,25 @@ class FormatApiResponse
      */
     private function formatResponse(JsonResponse $response): JsonResponse
     {
-        $statusCode = $response->getStatusCode();
-        $originalData = $response->getData(true);
+        try {
+            $statusCode = $response->getStatusCode();
+            $originalData = $response->getData(true);
 
-        $httpCode = $this->formatterService->mapStatusCodeToEnum($statusCode);
-        $message = $this->formatterService->extractMessage($originalData, $statusCode);
-        $data = $this->formatterService->extractDataFromResponse($originalData);
+            $httpCode = $this->formatterService->mapStatusCodeToEnum($statusCode);
+            $message = $this->formatterService->extractMessage($originalData, $statusCode);
+            $data = $this->formatterService->extractDataFromResponse($originalData);
 
-        return $this->formatterService->formatResponse($data, $message, $httpCode);
+            return $this->formatterService->formatResponse($data, $message, $httpCode);
+        } catch (\Throwable $th) {
+            Log::error('FormatApiResponse::formatResponse threw', [
+                'exception' => $th,
+                'trace' => $th->getTraceAsString(),
+            ]);
+            // Fallback to a plain JSON response
+            return response()->json([
+                'error' => 'ApiResponseFormatterService failed in formatResponse',
+                'formatter_error' => $th->getMessage(),
+            ], 500);
+        }
     }
 }
