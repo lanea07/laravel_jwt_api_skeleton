@@ -13,7 +13,7 @@ class SetLocale
     public function handle(Request $request, Closure $next): Response
     {
         $locale = $request->route('lang');
-        App::instance('route.lang', $locale);
+        App::instance('app.api.lang', $locale);
         $request->route()->forgetParameter('lang');
 
         if (!in_array($locale, ['en', 'es'])) {

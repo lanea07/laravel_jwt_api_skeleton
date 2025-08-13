@@ -18,7 +18,7 @@ class ValidateApiVersion
     public function handle(Request $request, Closure $next): Response
     {
         $version = $request->route('version');
-        App::instance('route.version', $version);
+        App::instance('app.api.version', $version);
         $request->route()->forgetParameter('version');
 
         if (!in_array($version, $this->allowedVersions, true)) {
