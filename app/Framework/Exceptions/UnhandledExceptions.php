@@ -111,7 +111,7 @@ class UnhandledExceptions extends Handler
                     'exception' => get_class($e),
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
-                    'trace' => $e->getTraceAsString(),
+                    'trace' => $e->getTrace(),
                 ],
             ],
             default => [],

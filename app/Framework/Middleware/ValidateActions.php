@@ -17,12 +17,11 @@ class ValidateActions
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$permissions): Response
     {
         $route = $request->route();
 
         $endSession = $route?->defaults['endSession'] ?? true;
-        $permissions = $route?->defaults['permissions'] ?? [];
         $permissions = array_map('intval', $permissions);
         self::hasPermissions($permissions, $endSession);
         return $next($request);
