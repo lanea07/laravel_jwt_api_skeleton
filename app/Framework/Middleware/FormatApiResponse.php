@@ -2,8 +2,6 @@
 
 namespace App\Framework\Middleware;
 
-use App\Framework\Enums\HttpStatusCodes;
-use App\Framework\Facades\ApiResponse;
 use Illuminate\Support\Facades\Log;
 use App\Framework\Services\ApiResponseFormatterService;
 use Closure;

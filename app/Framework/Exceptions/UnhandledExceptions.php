@@ -106,15 +106,29 @@ class UnhandledExceptions extends Handler
             $e instanceof ValidationException => [
                 'errors' => $e->errors(),
             ],
-            $e instanceof HttpException && config('app.debug') => [
-                'debug' => [
-                    'exception' => get_class($e),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'trace' => $e->getTrace(),
-                ],
+            config('app.debug') => [
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $this->cleanTrace($e->getTrace()),
             ],
             default => [],
         };
+    }
+
+    /**
+     * Clean the trace to match Laravel's default format (without args)
+     */
+    private function cleanTrace(array $trace): array
+    {
+        return array_map(function ($frame) {
+            return array_filter([
+                'file' => $frame['file'] ?? null,
+                'line' => $frame['line'] ?? null,
+                'function' => $frame['function'] ?? null,
+                'class' => $frame['class'] ?? null,
+                'type' => $frame['type'] ?? null,
+            ], fn($value) => $value !== null);
+        }, $trace);
     }
 }
