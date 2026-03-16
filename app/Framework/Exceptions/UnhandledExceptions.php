@@ -102,18 +102,34 @@ class UnhandledExceptions extends Handler
      */
     private function getExceptionData(Throwable $e): array
     {
-        return match (true) {
-            $e instanceof ValidationException => [
-                'errors' => $e->errors(),
-            ],
-            config('app.debug') => [
-                'exception' => get_class($e),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $this->cleanTrace($e->getTrace()),
-            ],
-            default => [],
-        };
+        if ($e instanceof ValidationException) {
+            return ['errors' => $e->errors()];
+        }
+
+        if (!config('app.debug')) {
+            return [];
+        }
+
+        $data = [
+            'exception' => get_class($e),
+            'message' => $e->getMessage() ?: '(no message)',
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'code' => $e->getCode(),
+            'trace' => $this->cleanTrace($e->getTrace()),
+        ];
+
+        if ($e->getPrevious() !== null) {
+            $prev = $e->getPrevious();
+            $data['previous'] = [
+                'exception' => get_class($prev),
+                'message' => $prev->getMessage() ?: '(no message)',
+                'file' => $prev->getFile(),
+                'line' => $prev->getLine(),
+            ];
+        }
+
+        return $data;
     }
 
     /**
